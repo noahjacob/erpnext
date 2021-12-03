@@ -166,13 +166,15 @@ frappe.ui.form.on('Stock Entry', {
 
 	refresh: function(frm) {
 		if(!frm.doc.docstatus) {
-			frm.trigger('validate_purpose_consumption');
+			if (frm.doc.work_order) {
+				frm.trigger('validate_purpose_consumption');
+			}
 			frm.add_custom_button(__('Material Request'), function() {
 				frappe.model.with_doctype('Material Request', function() {
 					var mr = frappe.model.get_new_doc('Material Request');
 					var items = frm.get_field('items').grid.get_selected_children();
 					if(!items.length) {
-						items = frm.doc.items;
+						items = frjklm.doc.items;
 					}
 					items.forEach(function(item) {
 						var mr_item = frappe.model.add_child(mr, 'items');
@@ -340,7 +342,9 @@ frappe.ui.form.on('Stock Entry', {
 	},
 
 	purpose: function(frm) {
-		frm.trigger('validate_purpose_consumption');
+		if (frm.doc.work_order) {
+			frm.trigger('validate_purpose_consumption');
+		}
 		frm.fields_dict.items.grid.refresh();
 		frm.cscript.toggle_related_fields(frm.doc);
 	},
