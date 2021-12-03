@@ -2,13 +2,13 @@
 // License: GNU General Public License v3. See license.txt
 
 frappe.provide("erpnext.maintenance");
-var serial_nos = [];
+let serial_nos = [];
 frappe.ui.form.on('Maintenance Visit', {
 	refresh: function (frm) {
 		//filters for serial_no based on item_code
 		frm.set_query('serial_no', 'purposes', function (frm, cdt, cdn) {
 			let item = locals[cdt][cdn];
-			if (serial_nos) {
+			if (serial_nos.length > 0) {
 				return {
 					filters: {
 						'item_code': item.item_code,
